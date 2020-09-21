@@ -1,0 +1,235 @@
+Option Compare Database
+Option Explicit
+
+Public CurBase As String
+Public curuser As String
+Public CurW As Integer
+Public IsFiltersShow As Boolean
+Public version As Integer
+Public SignalView As Boolean
+Public SignalID As Integer
+Public SignalLoad As Boolean
+Public EditItemOk As Boolean
+
+Public dWork As String
+
+Function Main()
+    '''''''''''''''''''''''
+    version = 9
+    dWork = "18.09.2020"
+    '''''''''''''''''''''''
+    'DoCmd.OpenForm "00_Защита", , , , , acDialog
+    'CurBase = "test"
+    curuser = GetValueP("nadzor_p_GetCU")
+    CheckPermissions
+    '''DoCmd.OpenForm "f_nadzor_filters"
+    'DoCmd.OpenForm "f_nadzor_PLC"
+    IsFiltersShow = True
+    SignalView = True
+    'CurR = 1
+ '   CurSigID = 0
+    EditItemOk = False
+End Function
+
+Function CheckPermissions()
+Dim cmd As ADODB.Command
+'
+Dim i As Integer
+Dim cversion As Integer
+Dim s As String
+
+    i = GetItemForm(s, "dbo.nadzor_p_GetPermits", "@login=" & "'" & curuser & "'", " - База")
+    If i = -1 Then Application.Quit
+'
+    Set cmd = New ADODB.Command
+    cmd.ActiveConnection = CurrentProject.Connection
+    cmd.CommandText = "nadzor_p_GetUserPermits"
+    cmd.CommandType = adCmdStoredProc
+    cmd.Parameters.Append cmd.CreateParameter("@login", adVarChar, adParamInput, 50, curuser)
+    cmd.Parameters.Append cmd.CreateParameter("@id", adInteger, adParamInput, , i)
+    cmd.Parameters.Append cmd.CreateParameter("@W", adInteger, adParamOutput, , Null)
+    cmd.Parameters.Append cmd.CreateParameter("@base", adVarChar, adParamOutput, 10, Null)
+    cmd.Parameters.Append cmd.CreateParameter("@ver", adInteger, adParamOutput, , Null)
+    cmd.Execute
+    CurW = cmd.Parameters("@W")
+    CurBase = cmd.Parameters("@base")
+    
+    cversion = cmd.Parameters("@ver")
+    If version < cversion Then
+        MsgBox "Версия программы (" & CStr(version) & ") меньше требуемой (" & CStr(cversion) & ") - Обновите!"
+        Application.Quit
+    End If
+End Function
+
+Function filter()
+    Forms("f_nadzor_filters").Фильтр
+End Function
+
+Function ShowFilters(force As Boolean)
+    If force Then IsFiltersShow = False
+    If CurrentProject.AllForms("f_nadzor_filters").IsLoaded Then
+        Forms("f_nadzor_filters").Visible = Not IsFiltersShow
+        IsFiltersShow = Not IsFiltersShow
+    Else
+        DoCmd.OpenForm "f_nadzor_filters"
+        IsFiltersShow = True
+    End If
+End Function
+
+Function NewNotify()
+    If CurrentProject.AllForms("f_nadzor_PLC").IsLoaded Then Forms("f_nadzor_PLC").NewNotify
+End Function
+
+Function EditNotify()
+    If CurrentProject.AllForms("f_nadzor_PLC").IsLoaded Then Forms("f_nadzor_PLC").OpenFormNotify
+End Function
+ 
+Function ViewNotify()
+    If CurrentProject.AllForms("f_nadzor_PLC").IsLoaded Then Forms("f_nadzor_PLC").OpenFormNotifyView
+End Function
+
+'Public Function GetItemForm(str1 As String, str2 As String, Optional cap As String = "")
+'    DoCmd.OpenForm "f_nadzor_GetItem", , , , , acDialog, str1 & "|" & str2 & "|" & cap
+'    GetItemForm = Forms("f_nadzor_GetItem").id_item
+'    DoCmd.Close acForm, "f_nadzor_GetItem"
+'End Function
+Public Function GetItemForm(ByRef idtext As String, str1 As String, str2 As String, _
+                            Optional cap As String = "", _
+                            Optional cols As Integer, _
+                            Optional iditem2 As Long, Optional ByRef idtext2 As String, _
+                            Optional iditem3 As Long, Optional ByRef idtext3 As String, _
+                            Optional setclipboard As Boolean = False, _
+                            Optional colws As String = "")
+Dim str As String
+    str = str1 & "|" & str2 & "|" & cap & "|" & cols & "|" & CStr(setclipboard)
+    If Len(colws) > 0 Then str = str & "|" & colws
+    
+    DoCmd.OpenForm "f_nadzor_GetItem", , , , , acDialog, str
+    
+    GetItemForm = Forms("f_nadzor_GetItem").id_item
+    idtext = Forms("f_nadzor_GetItem").id_text
+    idtext2 = Forms("f_nadzor_GetItem").id_text2
+    iditem2 = Forms("f_nadzor_GetItem").id_item2
+    idtext3 = Forms("f_nadzor_GetItem").id_text3
+    iditem3 = Forms("f_nadzor_GetItem").id_item3
+    DoCmd.Close acForm, "f_nadzor_GetItem"
+End Function
+
+Function GetValueP(proc As String, Optional id As Integer = -1, Optional ByRef str2 As String = "no", Optional id2 As Integer = -1) As String
+Dim cmd As ADODB.Command
+    Set cmd = New ADODB.Command
+    cmd.ActiveConnection = CurrentProject.Connection
+    cmd.CommandText = proc
+    cmd.CommandType = adCmdStoredProc
+    If id > -1 Then
+        cmd.Parameters.Append cmd.CreateParameter("@tid", adInteger, adParamInput, , id)
+        If id2 > -1 Then: cmd.Parameters.Append cmd.CreateParameter("@tid2", adInteger, adParamInput, , id2)
+        GetValueP = cmd.Execute.Fields(1)
+        If str2 <> "no" Then: str2 = cmd.Execute.Fields(2)
+    Else
+        GetValueP = cmd.Execute.Fields(0)
+    End If
+End Function
+
+
+Function reset()
+    On Error GoTo halt
+    If CurrentProject.AllForms("f_nadzor_PLC").IsLoaded Then DoCmd.Close acForm, "f_nadzor_PLC"
+    If CurrentProject.AllForms("f_nadzor_filters").IsLoaded Then DoCmd.Close acForm, "f_nadzor_filters"
+    If CurrentProject.AllForms("f_nadzor_EditNotif").IsLoaded Then DoCmd.Close acForm, "f_nadzor_EditNotif"
+    
+    DoCmd.OpenForm "f_nadzor_PLC"
+halt:
+End Function
+
+Function notice()
+  If CurW = 1 Then
+    If InStr(1, CurBase, "_imp") = 0 Then
+        If CurrentProject.AllForms("f_nadzor_PLC").IsLoaded Then Forms("f_nadzor_PLC").ImportNotice
+    End If
+  End If
+End Function
+
+Function getcuruser() As String
+    getcuruser = GetValueP("nadzor_p_GetCU")
+End Function
+
+Function deletenotif()
+Dim cmd As ADODB.Command
+Dim i, id As Integer
+
+'MsgBox Screen.ActiveForm.FormName
+
+  If (CurW = 1) And (Screen.ActiveForm.FormName = "f_nadzor_PLC") Then
+  
+    If CurrentProject.AllForms("f_nadzor_PLC").IsLoaded Then id = Forms("f_nadzor_PLC").id
+    i = MsgBox("Удалить сообщение с номером " & CStr(id) & "?", vbYesNo)
+    If i = vbYes Then
+        Set cmd = New ADODB.Command
+        cmd.ActiveConnection = CurrentProject.Connection
+        cmd.CommandText = "[dbo].[nadzor_p_DeleteNotif]"
+        cmd.CommandType = adCmdStoredProc
+        cmd.Parameters.Append cmd.CreateParameter("@id_notif", adInteger, adParamInput, , id)
+        cmd.Execute
+        DoCmd.OpenForm "f_nadzor_filters"
+        IsFiltersShow = True
+        Forms("f_nadzor_filters").Фильтр
+    End If
+    
+  End If
+    
+End Function
+
+Function movenotif()
+Dim s As String
+Dim id, i As Integer
+Dim cmd As ADODB.Command
+
+    If CurW = 1 Then
+    
+    id = -1
+    i = InStr(1, CurBase, "_imp")
+    If i > 0 Then
+        If CurrentProject.AllForms("f_nadzor_PLC").IsLoaded Then id = Forms("f_nadzor_PLC").id
+        If id > -1 Then
+            s = Left(CurBase, Len(CurBase) - 4)
+            '
+            i = MsgBox("Переместить сообщение с номером " & CStr(id) & " из базы " & CurBase & " в базу " & s & "?", vbYesNo)
+            If i = vbYes Then
+                Set cmd = New ADODB.Command
+                cmd.ActiveConnection = CurrentProject.Connection
+                cmd.CommandText = "[dbo].[nadzor_p_MoveNotif]"
+                cmd.CommandType = adCmdStoredProc
+                cmd.Parameters.Append cmd.CreateParameter("@newbase", adVarChar, adParamInput, 50, s)
+                cmd.Parameters.Append cmd.CreateParameter("@id_notif", adInteger, adParamInput, , id)
+                cmd.Execute
+                DoCmd.OpenForm "f_nadzor_filters"
+                IsFiltersShow = True
+                Forms("f_nadzor_filters").Фильтр
+            End If
+        End If
+    End If
+    
+    End If
+End Function
+
+Function runsignals()
+    If CurrentProject.AllForms("f_nadzor_filters").IsLoaded Then Forms("f_nadzor_filters").Visible = False
+    DoCmd.OpenForm "f_nadzor_signals"
+End Function
+
+Public Function MoCu()
+    MouseCursor (IDC_HAND)
+End Function
+
+Public Sub update_field(proc As String, i As Integer, o As Object, field As String)
+Dim rs As ADODB.Recordset
+Dim str As String
+    str = "exec " & proc & " @tid=" & CStr(i)
+    Set rs = CurrentProject.Connection.Execute(str)
+    o.Value = rs.Fields(field)
+End Sub
+
+Function checkinstr()
+    If CurrentProject.AllForms("f_nadzor_PLC").IsLoaded Then DoCmd.OpenForm "f_checkinstr"
+End Function
