@@ -1,0 +1,114 @@
+<ichicsr lang="ua">
+  <ichicsrmessageheader>
+    <messagetype>ichicsr</messagetype>
+    <messageformatversion>2.1</messageformatversion>
+    <messageformatrelease>1.0</messageformatrelease>
+    <messagenumb>todeclarer-20201008115822</messagenumb>
+    <messagesenderidentifier>UACNA</messagesenderidentifier>
+    <messagereceiveridentifier>VGFLW</messagereceiveridentifier>
+    <messagedateformat>204</messagedateformat>
+    <messagedate>20201008115822</messagedate>
+  </ichicsrmessageheader>
+  <safetyreport>
+    <safetyreportid>UA-SEC-2018-2203</safetyreportid>
+    <primarysourcecountry>UA</primarysourcecountry>
+    <occurcountry>UA</occurcountry>
+    <reporttype>1</reporttype>
+    <serious>2</serious>
+    <seriousnessdeath>2</seriousnessdeath>
+    <seriousnesslifethreatening>2</seriousnesslifethreatening>
+    <seriousnesshospitalization>2</seriousnesshospitalization>
+    <seriousnessdisabling>2</seriousnessdisabling>
+    <seriousnesscongenitalanomali>2</seriousnesscongenitalanomali>
+    <seriousnessother>2</seriousnessother>
+    <receivedateformat>102</receivedateformat>
+    <receivedate>20180201</receivedate>
+    <receiptdateformat>102</receiptdateformat>
+    <receiptdate>20180201</receiptdate>
+    <authoritynumb>UA-SEC-2018-2203</authoritynumb>
+    <medicallyconfirm>1</medicallyconfirm>
+    <primarysource>
+      <reportercountry>UA</reportercountry>
+      <qualification>1</qualification>
+    </primarysource>
+    <sender>
+      <sendertype>2</sendertype>
+      <senderorganization>Державний експертний центр</senderorganization>
+    </sender>
+    <receiver />
+    <patient>
+      <patientinitial>ГВЮ</patientinitial>
+      <patientbirthdateformat>102</patientbirthdateformat>
+      <patientbirthdate>19880921</patientbirthdate>
+      <patientonsetage>30</patientonsetage>
+      <patientonsetageunit>801</patientonsetageunit>
+      <patientagegroup>5</patientagegroup>
+      <patientweight>72</patientweight>
+      <patientsex>1</patientsex>
+      <reaction>
+        <primarysourcereaction>гіперемія з чіткими межами</primarysourcereaction>
+        <reactionmeddraversionllt>19.0</reactionmeddraversionllt>
+        <reactionmeddrallt>10003041</reactionmeddrallt>
+        <reactionmeddraversionpt>19.0</reactionmeddraversionpt>
+        <reactionmeddrapt>10003041</reactionmeddrapt>
+        <termhighlighted>1</termhighlighted>
+        <reactionstartdateformat>203</reactionstartdateformat>
+        <reactionstartdate>201801301020</reactionstartdate>
+        <reactionenddateformat>203</reactionenddateformat>
+        <reactionenddate>201801311100</reactionenddate>
+        <reactionduration>24</reactionduration>
+        <reactiondurationunit>805</reactiondurationunit>
+        <reactionfirsttime>80</reactionfirsttime>
+        <reactionfirsttimeunit>806</reactionfirsttimeunit>
+        <reactionoutcome>1</reactionoutcome>
+      </reaction>
+      <reaction>
+        <primarysourcereaction>набряк</primarysourcereaction>
+        <reactionmeddraversionllt>19.0</reactionmeddraversionllt>
+        <reactionmeddrallt>10003040</reactionmeddrallt>
+        <reactionmeddraversionpt>19.0</reactionmeddraversionpt>
+        <reactionmeddrapt>10003050</reactionmeddrapt>
+        <termhighlighted>1</termhighlighted>
+        <reactionstartdateformat>203</reactionstartdateformat>
+        <reactionstartdate>201801301020</reactionstartdate>
+        <reactionenddateformat>203</reactionenddateformat>
+        <reactionenddate>201801311100</reactionenddate>
+        <reactionduration>24</reactionduration>
+        <reactiondurationunit>805</reactiondurationunit>
+        <reactionfirsttime>80</reactionfirsttime>
+        <reactionfirsttimeunit>806</reactionfirsttimeunit>
+        <reactionoutcome>1</reactionoutcome>
+      </reaction>
+      <drug>
+        <drugcharacterization>1</drugcharacterization>
+        <medicinalproduct>ХЕПІДЕРМ ПЛЮС</medicinalproduct>
+        <drugbatchnumb>10517</drugbatchnumb>
+        <drugauthorizationnumb>UA/13321/01/01</drugauthorizationnumb>
+        <drugauthorizationcountry>UA</drugauthorizationcountry>
+        <drugauthorizationholder>Товариство з обмеженою відповідальністю "Фармацевтична ко...</drugauthorizationholder>
+        <drugstructuredosagenumb>1.000000000</drugstructuredosagenumb>
+        <drugstructuredosageunit>032</drugstructuredosageunit>
+        <drugseparatedosagenumb>2.000000000</drugseparatedosagenumb>
+        <drugintervaldosageunitnumb>1.000000000</drugintervaldosageunitnumb>
+        <drugintervaldosagedefinition>804</drugintervaldosagedefinition>
+        <drugdosageform>крем, по 20 г або по 40 г або по 100 г у тубі; ...</drugdosageform>
+        <drugadministrationroute>003</drugadministrationroute>
+        <drugstartdateformat>102</drugstartdateformat>
+        <drugstartdate>20180130</drugstartdate>
+        <drugenddateformat>102</drugenddateformat>
+        <drugenddate>20180130</drugenddate>
+        <drugtreatmentduration>1</drugtreatmentduration>
+        <drugtreatmentdurationunit>804</drugtreatmentdurationunit>
+        <actiondrug>1</actiondrug>
+        <drugrecurreadministration>2</drugrecurreadministration>
+        <activesubstance>
+          <activesubstancename>1 г препарату містить: декспантенолу 50 мг, бензалконію хлориду 0,5 мг; хлоргексидину диглюконату...</activesubstancename>
+        </activesubstance>
+      </drug>
+      <summary>
+        <narrativeincludeclinical>гіперемія з чіткими межами, набряк</narrativeincludeclinical>
+        <sendercomment>Дата отримання повідомлення ДЕЦ: 02.02.2018; Торгова назва препарату - ХЕПІДЕРМ ПЛЮС: Виробник: Товариство з обмеженою відповідальністю "Фармацевтична компанія "Здоров'я", Україна; Заявник: Товариство з обмеженою відповідальністю "Фармацевтична ко..., Україна; Показання для призначення: L08.0 Пиодермия</sendercomment>
+      </summary>
+    </patient>
+  </safetyreport>
+</ichicsr>
